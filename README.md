@@ -296,6 +296,38 @@ During an exit transaction:
 
 Using transactions, row-level locks, conditional updates, and database constraints ensures that booking records, parking area status, and slot counts remain consistent under concurrent operations.
 
+## Running Integration Tests
+
+**Prerequisites:**
+
+- MySQL must be running and configured in `backend/.env`.
+- Admin and Customer accounts must exist in the database.
+- Run `npm run seed:admin` to create the Admin account if it does not exist. Register a Customer account through the Signup page or import the provided database dump containing both accounts.
+
+**Run the tests:**
+
+Start the backend in the first terminal:
+
+```bash
+cd backend
+npm run dev 
+```
+Run the tests in a second terminal:
+
+```bash
+cd backend
+npm run test
+```
+
+The integration test performs the following steps:
+1. Logs in as Admin and creates a parking area with one CAR slot.
+2. Logs in as Customer and books that slot.
+3. Attempts a second booking and verifies that it is rejected because no slots are available.
+4. Exits the first booking and verifies successful exit.
+5. Cleans up the test-created parking area and related records.
+
+Note: The customer credentials used in the test file must match an account in the imported database or an account you have registered.
+
 ## Assumptions
 
 - The application supports two vehicle types: `BIKE` and `CAR`.
